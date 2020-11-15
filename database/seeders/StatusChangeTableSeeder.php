@@ -6,7 +6,7 @@ use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
-class OrderStatusTableSeeder extends Seeder
+class StatusChangeTableSeeder extends Seeder
 {
     public function run()
     {

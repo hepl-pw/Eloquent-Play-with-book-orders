@@ -8,12 +8,12 @@ class CreateForeignKeys extends Migration
 {
     public function up()
     {
-        Schema::table('order_status', function (Blueprint $table) {
+        Schema::table('statuschanges', function (Blueprint $table) {
             $table->foreign('order_id')->references('id')->on('orders')
                 ->onDelete('no action')
                 ->onUpdate('no action');
         });
-        Schema::table('order_status', function (Blueprint $table) {
+        Schema::table('statuschanges', function (Blueprint $table) {
             $table->foreign('status_id')->references('id')->on('statuses')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
@@ -23,11 +23,11 @@ class CreateForeignKeys extends Migration
 
     public function down()
     {
-        Schema::table('order_status', function (Blueprint $table) {
-            $table->dropForeign('order_status_order_id_foreign');
+        Schema::table('statuschanges', function (Blueprint $table) {
+            $table->dropForeign('statuschanges_order_id_foreign');
         });
-        Schema::table('order_status', function (Blueprint $table) {
-            $table->dropForeign('order_status_status_id_foreign');
+        Schema::table('statuschanges', function (Blueprint $table) {
+            $table->dropForeign('statuschanges_status_id_foreign');
         });
     }
 }

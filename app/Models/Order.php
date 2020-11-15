@@ -21,23 +21,23 @@ class Order extends Model
             ->withPivot('quantity');
     }
 
-    public function statusChanges()
+    public function statuschanges()
     {
         return $this
-            ->hasMany(OrderStatus::class, 'order_id');
+            ->hasMany(Statuschange::class, 'order_id');
     }
 
-    public function activeStatusChanges()
+    public function activeStatuschanges()
     {
         return $this
-            ->hasMany(OrderStatus::class, 'order_id')
+            ->hasMany(Statuschange::class, 'order_id')
             ->whereNotIn('status_id', [4, 5]);
     }
 
-    public function orderedActiveStatusChanges()
+    public function orderedActiveStatuschanges()
     {
         return $this
-            ->hasMany(OrderStatus::class, 'order_id')
+            ->hasMany(Statuschange::class, 'order_id')
             ->whereNotIn('status_id', [4, 5])
             ->orderBy('created_at', 'desc');
     }
@@ -45,20 +45,21 @@ class Order extends Model
     public function lastActiveStatusChange()
     {
         return $this
-            ->hasOne(OrderStatus::class)
+            ->hasOne(Statuschange::class)
             ->whereNotIn('status_id', [4, 5])
             ->orderBy('created_at', 'desc');
     }
 
+
     public function scopeWithCurrentStatus($q)
     {
         $q->addSelect([
-            'current_status_date' => OrderStatus::select('order_status.created_at')
+            'current_status_date' => Statuschange::select('statuschanges.created_at')
                 ->whereColumn('order_id', 'orders.id')
-                ->whereNotIn('order_status.status_id',[4,5])
+                ->whereNotIn('statuschanges.status_id',[4,5])
                 ->latest()
                 ->take(1),
-            'current_status_id' => OrderStatus::select('order_status.status_id')
+            'current_status_id' => Statuschange::select('statuschanges.status_id')
                 ->whereColumn('order_id', 'orders.id')
                 ->whereColumn('created_at', 'current_status_date')
                 ->take(1)
@@ -82,12 +83,17 @@ class Order extends Model
      */
     public function statuses()
     {
-        return $this->belongsToMany(Status::class)->withTimestamps();
+        return $this
+            ->belongsToMany(Status::class,'statuschanges')
+            ->withTimestamps();
     }
 
     public function activeStatus()
     {
-        return $this->belongsToMany(Status::class)->withTimestamps()->orderBy();
+        return $this
+            ->belongsToMany(Status::class, 'statuschanges')
+            ->withTimestamps()
+            ->orderBy();
     }
 
     /**
@@ -96,7 +102,8 @@ class Order extends Model
      */
     public function academicYear()
     {
-        return $this->belongsTo(AcademicYear::class, 'academic_year_id');
+        return $this
+            ->belongsTo(AcademicYear::class, 'academic_year_id');
     }
 
     /**

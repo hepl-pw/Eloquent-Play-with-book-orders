@@ -4,11 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderStatusTable extends Migration
+class CreateStatusChangeTable extends Migration
 {
     public function up()
     {
-        Schema::create('order_status', function (Blueprint $table) {
+        Schema::create('statuschanges', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->integer('order_id')->unsigned();
@@ -18,6 +18,6 @@ class CreateOrderStatusTable extends Migration
 
     public function down()
     {
-        Schema::drop('order_status');
+        Schema::drop('statuschanges');
     }
 }

@@ -21,7 +21,7 @@ Route::get('/', function () {
     $orders = Order::select('users.name as owner_name','users.id as owner_id','orders.id as order_id')
         ->join('users','users.id','=','user_id')
         ->withCurrentStatus()
-        ->get();
-
+        ->paginate(15);
+    //$orders = [];
     return view('welcome', compact('orders'));
 });

@@ -15,7 +15,12 @@ class OrderTableSeeder extends Seeder
             Order::create([
                 'user_id' => $user->id
             ]);
-            if (rand(0, 5) < 1) {
+            if (rand(0, 10) < 1) {
+                Order::create([
+                    'user_id' => $user->id
+                ]);
+            }
+            if (rand(0, 100) < 1) {
                 Order::create([
                     'user_id' => $user->id
                 ]);
